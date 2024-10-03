@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C.O.N-IBOT TRADING MOBILE ROBOT</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Prompt:ital,wght@0,100;0,200;0,400;0,500;0,700;1,100&family=Work+Sans:wght@300;400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7598329678349617"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" crossorigin src="/assets/index-dbe7d66b.js"></script>
+    <link rel="stylesheet" href="/assets/index-15d87c1d.css">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f7f7f7;
+      }
+      .container {
+        text-align: center;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 90%;
+        max-width: 600px;
+      }
+      h1 {
+        font-family: 'Arial Black', sans-serif;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      input, select {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .message {
+        margin-top: 20px;
+        font-size: 16px;
+      }
+      .contact {
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      .file-upload {
+        display: none;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>C.O.N-IBOT TRADING MOBILE ROBOT</h1>
+      
+      <!-- Login and License Key Section -->
+      <input type="text" id="login" placeholder="Login" />
+      <input type="password" id="password" placeholder="Password" />
+      <input type="text" id="server" placeholder="Server" />
+      <input type="text" id="licenseKey" placeholder="License Key" />
+      
+      <!-- Robot Selection Section -->
+      <div>
+        <label for="robotType">Choose Robot:</label>
+        <select id="robotType">
+          <option value="C.O.N-IBOT">C.O.N-IBOT</option>
+          <option value="Custom Robot" onclick="window.open('https://wa.me/27749224429', '_blank')">Custom Robot</option>
+        </select>
+      </div>
+      
+      <!-- Buttons Section -->
+      <button onclick="submitAccountDetails()">Submit Account Details</button>
+      <button onclick="addCustomRobot()">Admin Custom Robot</button>
+      <button onclick="toggleAutoTrading()">Toggle Auto Trading</button>
+
+      <!-- File upload (hidden by default) -->
+      <input type="file" id="robotFile" class="file-upload" />
+
+      <!-- Message Display -->
+      <div class="message" id="message"></div>
+      
+      <!-- Contact Info -->
+      <div class="contact">
+        <p>Contact: <a href="https://www.instagram.com/child_of_nasdaq_official">Instagram</a></p>
+      </div>
+    </div>
+
+    <script>
+      // Function to submit account details
+      function submitAccountDetails() {
+        const login = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        const server = document.getElementById('server').value;
+        const licenseKey = document.getElementById('licenseKey').value;
+
+        // License key check
+        if (licenseKey === 'CONIBOTTRADINGMOBILE') {
+          document.getElementById('message').innerText = "Account details submitted.";
+          // Add API call to submit these details to the server
+        } else {
+          document.getElementById('message').innerText = "INCORRECT LICENSE KEY";
+        }
+      }
+
+      // Function to add custom robot (with file upload)
+      function addCustomRobot() {
+        const adminPassword = prompt("Enter Admin Password:");
+        if (adminPassword === "CHILDOFNASDAQOFFICIALJPMARKETS") {
+          document.getElementById('message').innerText = "Access granted to add custom robot.";
+          document.getElementById('robotFile').classList.remove('file-upload');
+          document.getElementById('robotFile').style.display = 'block'; // Show file upload
+        } else {
+          alert("Incorrect password.");
+        }
+      }
+
+      // Function to toggle auto trading
+      function toggleAutoTrading() {
+        alert("Toggling Auto Trading...");
+        document.getElementById('message').innerText = "C.O.N IS TRADING FOR YOU";
+      }
+    </script>
+  </body>
+</html>
