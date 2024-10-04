@@ -2,26 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>C.O.N-IBOT TRADING MOBILE ROBOT</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css"
       rel="stylesheet"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Prompt:ital,wght@0,100;0,200;0,400;0,500;0,700;1,100&family=Work+Sans:wght@300;400;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7598329678349617"
-      crossorigin="anonymous"
-    ></script>
-    <script type="module" crossorigin src="/assets/index-dbe7d66b.js"></script>
-    <link rel="stylesheet" href="/assets/index-15d87c1d.css">
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -68,13 +54,48 @@
         margin-top: 20px;
         font-size: 16px;
       }
-      .contact {
-        margin-top: 20px;
-        font-size: 14px;
-      }
       .file-upload {
         display: none;
         margin-top: 20px;
+      }
+      /* Auto Trading Icon */
+      .auto-trading-icon {
+        display: none;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        cursor: pointer;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        width: 40px;
+        height: 40px;
+      }
+      .auto-trading-icon img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      /* Auto Trading Status */
+      .auto-trading-status {
+        display: none;
+        position: fixed;
+        bottom: 60px;
+        right: 10px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: left;
+        width: 200px;
+      }
+      .auto-trading-status img {
+        max-width: 30px;
+        margin-right: 10px;
+      }
+      .contact {
+        margin-top: 20px;
+        font-size: 14px;
       }
     </style>
   </head>
@@ -82,13 +103,13 @@
   <body>
     <div class="container">
       <h1>C.O.N-IBOT TRADING MOBILE ROBOT</h1>
-      
+
       <!-- Login and License Key Section -->
       <input type="text" id="login" placeholder="Login" />
       <input type="password" id="password" placeholder="Password" />
       <input type="text" id="server" placeholder="Server" />
       <input type="text" id="licenseKey" placeholder="License Key" />
-      
+
       <!-- Robot Selection Section -->
       <div>
         <label for="robotType">Choose Robot:</label>
@@ -97,7 +118,7 @@
           <option value="Custom Robot" onclick="window.open('https://wa.me/27749224429', '_blank')">Custom Robot</option>
         </select>
       </div>
-      
+
       <!-- Buttons Section -->
       <button onclick="submitAccountDetails()">Submit Account Details</button>
       <button onclick="addCustomRobot()">Admin Custom Robot</button>
@@ -105,50 +126,114 @@
 
       <!-- File upload (hidden by default) -->
       <input type="file" id="robotFile" class="file-upload" />
+      <input type="file" id="robotLogo" class="file-upload" accept="image/*" />
+
+      <!-- Auto Trading Icon and Status -->
+      <div class="auto-trading-icon" id="autoTradingIcon">
+        <img id="robotLogoImg" src="https://via.placeholder.com/50" alt="Robot Icon" />
+      </div>
+      <div class="auto-trading-status" id="autoTradingStatus">
+        <p><strong>Robot Name:</strong> <span id="robotName"></span></p>
+        <p><strong>Status:</strong> Trading Active</p>
+        <p><strong>Symbol:</strong> <span id="tradingSymbol">N/A</span></p>
+        <p><strong>Signal:</strong> <span id="tradingSignal">No Signal</span></p>
+        <button onclick="closeAutoTradingStatus()">Close</button>
+      </div>
 
       <!-- Message Display -->
       <div class="message" id="message"></div>
-      
-      <!-- Contact Info -->
+
+      <!-- Contact -->
       <div class="contact">
-        <p>Contact: <a href="https://www.instagram.com/child_of_nasdaq_official">Instagram</a></p>
+        <p>Contact: <a href="https://www.instagram.com/child_of_nasdaq_official" target="_blank">Instagram</a></p>
       </div>
+
+      <script>
+        let customRobotUploaded = false;
+        let customRobotName = 'C.O.N-IBOT'; // Default robot name
+
+        // Function to submit account details
+        function submitAccountDetails() {
+          const login = document.getElementById('login').value;
+          const password = document.getElementById('password').value;
+          const server = document.getElementById('server').value;
+          const licenseKey = document.getElementById('licenseKey').value;
+
+          // License key check
+          if (licenseKey === 'CONIBOTTRADINGMOBILE') {
+            document.getElementById('message').innerText = "Account details submitted.";
+            // Add API call to submit these details to the server
+          } else {
+            document.getElementById('message').innerText = "INCORRECT LICENSE KEY";
+          }
+        }
+
+        // Function to add custom robot (with file and logo upload)
+        function addCustomRobot() {
+          const adminPassword = prompt("Enter Admin Password:");
+          if (adminPassword === "CHILDOFNASDAQOFFICIALJPMARKETS") {
+            document.getElementById('message').innerText = "Access granted to add custom robot.";
+            document.getElementById('robotFile').style.display = 'block'; // Show file upload
+            document.getElementById('robotLogo').style.display = 'block'; // Show logo upload
+            customRobotUploaded = true;
+
+            // Get the name of the uploaded robot file and use it as the robot name
+            const robotFileInput = document.getElementById('robotFile');
+            robotFileInput.onchange = function(event) {
+              const fileName = event.target.files[0].name;
+              customRobotName = fileName.replace(/\.[^/.]+$/, ""); // Remove the file extension
+            };
+          } else {
+            alert("Incorrect password.");
+          }
+        }
+
+        // Function to toggle auto trading
+        function toggleAutoTrading() {
+          // Show the icon on the screen
+          const icon = document.getElementById('autoTradingIcon');
+          icon.style.display = 'block';
+
+          // Assign the robot name and logo to the status box
+          const robotName = customRobotUploaded ? customRobotName : 'C.O.N-IBOT';
+          const logoInput = document.getElementById('robotLogo');
+          if (customRobotUploaded && logoInput.files && logoInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              document.getElementById('robotLogoImg').src = e.target.result;
+            };
+            reader.readAsDataURL(logoInput.files[0]);
+          }
+
+          document.getElementById('robotName').innerText = robotName;
+
+          // Fetch real trading data from your PC (Simulated for this example)
+          fetchTradingDataFromPC();
+        }
+
+        // Simulate fetching real trading data from PC
+        function fetchTradingDataFromPC() {
+          // Example of real data fetching (Replace with actual API call to your PC robot)
+          const symbol = 'EURUSD';  // Replace with real data from your PC
+          const signal = 'Buy';     // Replace with real signal data
+
+          document.getElementById('tradingSymbol').innerText = symbol;
+          document.getElementById('tradingSignal').innerText = signal;
+        }
+
+        // Function to show robot status when clicking the icon
+        const icon = document.getElementById('autoTradingIcon');
+        icon.addEventListener('click', function() {
+          const status = document.getElementById('autoTradingStatus');
+          status.style.display = 'block';
+        });
+
+        // Function to close the robot status
+        function closeAutoTradingStatus() {
+          const status = document.getElementById('autoTradingStatus');
+          status.style.display = 'none';
+        }
+      </script>
     </div>
-
-    <script>
-      // Function to submit account details
-      function submitAccountDetails() {
-        const login = document.getElementById('login').value;
-        const password = document.getElementById('password').value;
-        const server = document.getElementById('server').value;
-        const licenseKey = document.getElementById('licenseKey').value;
-
-        // License key check
-        if (licenseKey === 'CONIBOTTRADINGMOBILE') {
-          document.getElementById('message').innerText = "Account details submitted.";
-          // Add API call to submit these details to the server
-        } else {
-          document.getElementById('message').innerText = "INCORRECT LICENSE KEY";
-        }
-      }
-
-      // Function to add custom robot (with file upload)
-      function addCustomRobot() {
-        const adminPassword = prompt("Enter Admin Password:");
-        if (adminPassword === "CHILDOFNASDAQOFFICIALJPMARKETS") {
-          document.getElementById('message').innerText = "Access granted to add custom robot.";
-          document.getElementById('robotFile').classList.remove('file-upload');
-          document.getElementById('robotFile').style.display = 'block'; // Show file upload
-        } else {
-          alert("Incorrect password.");
-        }
-      }
-
-      // Function to toggle auto trading
-      function toggleAutoTrading() {
-        alert("Toggling Auto Trading...");
-        document.getElementById('message').innerText = "C.O.N IS TRADING FOR YOU";
-      }
-    </script>
   </body>
 </html>
